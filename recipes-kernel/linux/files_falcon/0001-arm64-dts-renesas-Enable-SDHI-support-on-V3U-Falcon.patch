@@ -1,0 +1,79 @@
+From 8b3799537217fc427152102b6cbc66eec737a362 Mon Sep 17 00:00:00 2001
+From: Harunobu Kurokawa <harunobu.kurokawa.dn@renesas.com>
+Date: Mon, 7 Nov 2022 22:06:21 +0900
+Subject: [PATCH] arm64: dts: renesas: Enable SDHI support on V3U Falcon
+
+This is the patch to enable SDHI support on V3U Falcon.
+
+Signed-off-by: Tam Nguyen <tam.nguyen.xa@renesas.com>
+Signed-off-by: Harunobu Kurokawa <harunobu.kurokawa.dn@renesas.com>
+---
+ .../boot/dts/renesas/r8a779a0-falcon-cpu.dtsi | 31 +++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+
+diff --git a/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi b/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
+index 1ad475c402ab..f40a390deb5e 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
+@@ -83,6 +83,16 @@ reg_3p3v: regulator-3p3v {
+ 		regulator-boot-on;
+ 		regulator-always-on;
+ 	};
++
++	vcc_sdhi: regulator-vcc-sdhi {
++		compatible = "regulator-fixed";
++		regulator-name = "SDHI VCC";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++
++		gpio = <&gpio0 17 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
+ };
+ 
+ &extal_clk {
+@@ -124,6 +134,7 @@ &i2c6 {
+ 	clock-frequency = <400000>;
+ };
+ 
++#if 0
+ &mmc0 {
+ 	pinctrl-0 = <&mmc_pins>;
+ 	pinctrl-1 = <&mmc_pins>;
+@@ -142,6 +153,20 @@ &mmc0 {
+ 	full-pwr-cycle-in-suspend;
+ 	status = "okay";
+ };
++#else
++&mmc0 {
++	pinctrl-0 = <&sd_pins>;
++	pinctrl-1 = <&sd_pins>;
++	pinctrl-names = "default", "state_uhs";
++
++	vmmc-supply = <&vcc_sdhi>;
++	vqmmc-supply = <&vcc_sdhi>;
++	cd-gpios = <&gpio0 16 GPIO_ACTIVE_LOW>;
++	wp-gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
++	bus-width = <4>;
++	status = "okay";
++};
++#endif
+ 
+ &pfc {
+ 	pinctrl-0 = <&scif_clk_pins>;
+@@ -168,6 +193,12 @@ mmc_pins: mmc {
+ 		power-source = <1800>;
+ 	};
+ 
++	sd_pins: sd {
++		groups = "mmc_data4", "mmc_ctrl";
++		function = "mmc";
++		power-source = <3300>;
++	};
++
+ 	scif0_pins: scif0 {
+ 		groups = "scif0_data", "scif0_ctrl";
+ 		function = "scif0";
+-- 
+2.25.1
+

@@ -26,6 +26,8 @@ SRC_URI:append = " \
 #file://000x-clk-add-clock-for-MFIS-registers-for-RCAR-falcon.patch
 SRC_URI:append = " \
     file://0002-falcon-dt-Falcon-OpenAMP-ready-device-tree.patch \
+    file://0001-arm64-dts-renesas-Enable-SDHI-support-on-V3U-Falcon.patch \
+    file://0002-arm64-dts-renesas-Add-disablewp-for-SD.patch \
 "
 
 #Mailbox

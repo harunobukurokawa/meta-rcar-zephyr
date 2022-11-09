@@ -1,0 +1,25 @@
+From a88c7b543fd97fed914c28335d01864b5f022a47 Mon Sep 17 00:00:00 2001
+From: Harunobu Kurokawa <harunobu.kurokawa.dn@renesas.com>
+Date: Wed, 9 Nov 2022 07:58:43 +0900
+Subject: [PATCH] arm64: dts: renesas: Add disablewp for SD
+
+Signed-off-by: Harunobu Kurokawa <harunobu.kurokawa.dn@renesas.com>
+---
+ arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi b/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
+index f40a390deb5e..c2f94e824fbc 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a779a0-falcon-cpu.dtsi
+@@ -164,6 +164,7 @@ &mmc0 {
+ 	cd-gpios = <&gpio0 16 GPIO_ACTIVE_LOW>;
+ 	wp-gpios = <&gpio0 15 GPIO_ACTIVE_HIGH>;
+ 	bus-width = <4>;
++	disable-wp;
+ 	status = "okay";
+ };
+ #endif
+-- 
+2.25.1
+
